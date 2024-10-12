@@ -1,0 +1,5 @@
+[build]
+# this folder is synced between multiple machines using different OSes
+target-dir = "/tmp/website/build/dir"
+
+rustdocflags = [ "--html-in-header", "./docs-header.html" ]
