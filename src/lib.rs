@@ -110,14 +110,8 @@ impl Fairing for SassFairing {
 
         let context = &*ctx_manager.context();
 
-        let sass_dir = context
-            .sass_dir
-            .strip_prefix(std::env::current_dir().unwrap())
-            .expect("sass_dir is not defined");
-        let css_dir = context
-            .css_dir
-            .strip_prefix(std::env::current_dir().unwrap())
-            .expect("css_dir is not defined");
+        let sass_dir = &context.sass_dir;
+        let css_dir = &context.css_dir;
 
         rocket::info!("{}{}:", "✨ ", "Sass".magenta());
         rocket::info_!("sass directory: {}", sass_dir.display().white());
