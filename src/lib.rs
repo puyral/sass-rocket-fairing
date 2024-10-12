@@ -2,7 +2,6 @@ mod context;
 
 use rocket::{
     fairing::{Fairing, Info, Kind},
-    log::PaintExt,
     yansi::Paint,
     Build, Orbit, Rocket,
 };
@@ -120,9 +119,9 @@ impl Fairing for SassFairing {
             .strip_prefix(std::env::current_dir().unwrap())
             .expect("css_dir is not defined");
 
-        rocket::info!("{}{}:", Paint::emoji("✨ "), Paint::magenta("Sass"));
-        rocket::info_!("sass directory: {}", Paint::white(sass_dir.display()));
-        rocket::info_!("css directory: {}", Paint::white(css_dir.display()));
+        rocket::info!("{}{}:", "✨ ", "Sass".magenta());
+        rocket::info_!("sass directory: {}", sass_dir.display().white());
+        rocket::info_!("css directory: {}", css_dir.display().white());
 
         // Precompile sass files if in debug mode
         if cfg!(debug_assertions) {

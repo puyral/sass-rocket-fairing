@@ -68,7 +68,8 @@ mod manager {
 
     use std::io::Write;
 
-    use notify::{raw_watcher, RawEvent, RecommendedWatcher, RecursiveMode, Watcher};
+    // use notify::{raw_watcher, RawEvent, RecommendedWatcher, RecursiveMode, Watcher};
+    use notify::{ RecommendedWatcher, Event, Error, RecursiveMode, Watcher};
     use walkdir::WalkDir;
 
     use super::Context;
@@ -76,15 +77,19 @@ mod manager {
     /// Manages the `Context`
     pub struct ContextManager{
         context: RwLock<Context>,
-        watcher: Option<(RecommendedWatcher, Mutex<mpsc::Receiver<RawEvent>>)>
+        watcher: Option<(RecommendedWatcher, Mutex<mpsc::Receiver<Result<Event, Error>>>)>
     }
 
     impl ContextManager {
         pub fn new(ctx: Context) -> Self {
             let (tx, rx) = mpsc::channel();
-            let watcher = raw_watcher(tx).and_then(|mut watcher| {
-                watcher.watch(ctx.sass_dir.canonicalize()?, RecursiveMode::Recursive)?;
+            // let watcher = raw_watcher(tx).and_then(|mut watcher| {
+            //     watcher.watch(ctx.sass_dir.canonicalize()?, RecursiveMode::Recursive)?;
 
+            //     Ok(watcher)
+            // });
+            let watcher = notify::recommended_watcher(tx).and_then(|mut watcher| {
+                watcher.watch(&ctx.sass_dir.canonicalize()?, RecursiveMode::Recursive)?;
                 Ok(watcher)
             });
 
