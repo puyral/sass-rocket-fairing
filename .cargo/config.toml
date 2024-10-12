@@ -1,5 +1,5 @@
 [build]
-# this folder is synced between multiple machines using different OSes
-target-dir = "/tmp/website/build/dir"
-
-rustdocflags = [ "--html-in-header", "./docs-header.html" ]
+# Since the current folder is synced between different machine with different OSes,
+# things go wrong because they would share the target directory by default.
+# I'm sending it to /tmp to ensure it's different for each machine
+target-dir = "/tmp/sass-rocket-fairing/build/dir"
